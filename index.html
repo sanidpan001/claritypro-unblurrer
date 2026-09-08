@@ -1,0 +1,117 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="ClarityPro - Free AI Image Unblurrer. Make blurry photos clear and sharp instantly in your browser. No sign-in, no watermark, no subscription." />
+    <title>ClarityPro - AI Image Unblur & Sharpener</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@4.20.0/dist/tf.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@upscalerjs/esrgan-slim@1.0.0-beta.4/dist/umd/esrgan-slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/upscaler@1.0.0-beta.4/dist/browser/umd/upscaler.min.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            fontFamily: { sans: ['Inter', 'system-ui', 'sans-serif'] },
+            colors: {
+              brand: {
+                50: '#eef6ff', 100: '#d9eaff', 200: '#bcd9ff', 300: '#8ec1ff',
+                400: '#599cff', 500: '#3377ff', 600: '#1a57f5', 700: '#1443e1',
+                800: '#1738b6', 900: '#19388f',
+              },
+              accent: {
+                400: '#22c55e', 500: '#16a34a', 600: '#15803d', 700: '#166534',
+              },
+            },
+          },
+        },
+      };
+    </script>
+    <style>
+      body { font-family: 'Inter', system-ui, sans-serif; }
+      .gradient-text {
+        background: linear-gradient(135deg, #3377ff 0%, #1a57f5 50%, #1443e1 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+      }
+      .gradient-btn {
+        background: linear-gradient(135deg, #3377ff 0%, #1a57f5 100%);
+        transition: all .3s ease;
+      }
+      .gradient-btn:hover {
+        background: linear-gradient(135deg, #1a57f5 0%, #1443e1 100%);
+        box-shadow: 0 8px 24px rgba(26, 87, 245, 0.35);
+        transform: translateY(-1px);
+      }
+      .gradient-btn:active { transform: translateY(0); }
+      .compare-slider { -webkit-appearance: none; appearance: none; }
+      .compare-slider::-webkit-slider-thumb {
+        -webkit-appearance: none; appearance: none;
+        width: 36px; height: 36px;
+        border-radius: 50%;
+        background: #3377ff;
+        cursor: ew-resize;
+        border: 3px solid #fff;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.25);
+      }
+      .compare-slider::-moz-range-thumb {
+        width: 36px; height: 36px; border-radius: 50%;
+        background: #3377ff; cursor: ew-resize;
+        border: 3px solid #fff; box-shadow: 0 2px 8px rgba(0,0,0,0.25);
+      }
+      .fade-in { animation: fadeIn .4s ease; }
+      @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+      .spin { animation: spin 1s linear infinite; }
+      @keyframes spin { to { transform: rotate(360deg); } }
+      .ad-box {
+        border: 2px dashed #cbd5e1;
+        border-radius: 1rem;
+        background: #f8fafc;
+        display: flex; align-items: center; justify-content: center;
+        min-height: 90px; color: #94a3b8; font-size: .85rem; font-weight: 500;
+        text-align: center;
+      }
+      .nav-link { position: relative; }
+      .nav-link::after {
+        content: ''; position: absolute; bottom: -2px; left: 0;
+        width: 0; height: 2px; background: #3377ff;
+        transition: width .3s ease;
+      }
+      .nav-link:hover::after { width: 100%; }
+      .dropdown:hover .dropdown-menu { opacity: 1; visibility: visible; transform: translateY(0); }
+      .dropdown-menu { opacity: 0; visibility: hidden; transform: translateY(8px); transition: all .2s ease; }
+      .compare-container { position: relative; overflow: hidden; border-radius: 1rem; }
+      .compare-after { position: absolute; top: 0; left: 0; height: 100%; overflow: hidden; }
+      .compare-after img { max-width: none; }
+      .compare-divider {
+        position: absolute; top: 0; bottom: 0; width: 3px;
+        background: #3377ff; pointer-events: none;
+      }
+      .compare-handle {
+        position: absolute; top: 50%; left: 50%;
+        transform: translate(-50%, -50%);
+        width: 36px; height: 36px; border-radius: 50%;
+        background: #3377ff; display: flex; align-items: center; justify-content: center;
+        color: #fff; font-size: 18px; pointer-events: none;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.25);
+      }
+      details summary::-webkit-details-marker { display: none; }
+      details summary { list-style: none; cursor: pointer; }
+      details[open] .faq-chevron { transform: rotate(180deg); }
+      .faq-chevron { transition: transform .2s ease; }
+    </style>
+    <meta property="og:image" content="https://bolt.new/static/og_default.png">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:image" content="https://bolt.new/static/og_default.png">
+</head>
+  <body class="bg-white text-slate-800 min-h-screen flex flex-col">
+    <div id="app"></div>
+    <script type="module" src="/main.js"></script>
+  </body>
+</html>
